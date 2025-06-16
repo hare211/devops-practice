@@ -36,7 +36,7 @@ public class BoardController {
 		model.addAttribute("totalPage", totalPage);
 		model.addAttribute("curPage", curPage);
 		model.addAttribute("main_html", "board/list");
-		return "list";
+		return "index";
 	}
 	
 	@GetMapping("/board/insert")

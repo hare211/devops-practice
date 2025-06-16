@@ -42,6 +42,7 @@ public class FoodController {
 		model.addAttribute("totalPage", totalPage);
 		model.addAttribute("startPage", startPage);
 		model.addAttribute("endPage", endPage);
+		model.addAttribute("main_html", "main/home");
 		
 		return "index";
 	}
@@ -53,6 +54,13 @@ public class FoodController {
 		}
 		FoodEntity detail = fService.getFoodDetail(fno);
 		model.addAttribute("vo", detail);
-		return "detail";
+		model.addAttribute("main_html", "food/detail");
+		return "index";
+	}
+	
+	@GetMapping("/find")
+	public String food_find(Model model) {
+		model.addAttribute("main_html", "food/find");
+		return "index";
 	}
 }
