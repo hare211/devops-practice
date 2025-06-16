@@ -43,7 +43,7 @@ jobs:
 
     - name: Add known_hosts
       run: |
-        ssh-keyscan -t ed25519 15.164.94.6 >> ~/.ssh/known_hosts
+        ssh-keyscan -t ed25519 52.78.77.82 >> ~/.ssh/known_hosts
 
     #- name: 기존프로세스 종료
     #  run: |
@@ -51,14 +51,24 @@ jobs:
 
     - name: Deploy with rsync
       run: |
-        timeout 60s rsync -e "ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no" \
-          -avz build/libs/*.jar ubuntu@15.164.94.6:~/app
+        set +e
+        timeout 300s rsync -e "ssh -o StrictHostKeyChecking=yes" \
+          -avz build/libs/*.jar ubuntu@52.78.77.82:~/app
+        EXIT_CODE=$?
+        if [ "$EXIT_CODE" -eq 124 ]; then
+          echo "Rsync timed out after 5 minutes, proceeding..."
+        elif [ "$EXIT_CODE" -ne 0 ]; then
+          echo "Rsync failed with exit code $EXIT_CODE"
+          exit $EXIT_CODE
+        else
+          echo "Rsync succeeded."
+        fi
 
 
 
     - name: Run SSH commands
       run: |
-        ssh -i ~/.ssh/id_ed25519 ubuntu@15.164.94.6 << 'EOF'
+        ssh -i ~/.ssh/id_ed25519 ubuntu@52.78.77.82 << 'EOF'
           pkill -f 'java -jar' || true
           nohup java -jar ~/app/devops-0.0.1-SNAPSHOT.jar > log.txt 2>&1 &
         EOF
