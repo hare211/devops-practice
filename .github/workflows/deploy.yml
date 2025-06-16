@@ -51,18 +51,8 @@ jobs:
 
     - name: Deploy with rsync
       run: |
-        set +e
-        timeout 300s rsync -e "ssh -o StrictHostKeyChecking=yes" \
-          -avz build/libs/*.jar ubuntu@52.78.77.82:~/app
-        EXIT_CODE=$?
-        if [ "$EXIT_CODE" -eq 124 ]; then
-          echo "Rsync timed out after 5 minutes, proceeding..."
-        elif [ "$EXIT_CODE" -ne 0 ]; then
-          echo "Rsync failed with exit code $EXIT_CODE"
-          exit $EXIT_CODE
-        else
-          echo "Rsync succeeded."
-        fi
+        rsync -e "ssh -o StrictHostKeyChecking=yes" -avz build/libs/*.jar ubuntu@52.78.77.82:~/app
+
 
 
 
