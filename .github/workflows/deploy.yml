@@ -58,7 +58,5 @@ jobs:
 
     - name: Run SSH commands
       run: |
-        ssh -i ~/.ssh/id_ed25519 ubuntu@52.78.77.82 << 'EOF'
-          pkill -f 'java -jar' || true
-          nohup java -jar ~/app/devops-0.0.1-SNAPSHOT.jar > log.txt 2>&1 &
-        EOF
+        ssh -i ~/.ssh/id_ed25519 ubuntu@52.78.77.82 "pkill -f 'java -jar' || true && nohup java -jar ~/app/DevopsPractice-0.0.1-SNAPSHOT.jar > ~/log.txt 2>&1 &"
+
