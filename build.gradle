@@ -41,3 +41,8 @@ dependencies {
 test {
 	useJUnitPlatform()
 }
+
+bootJar {
+	archiveBaseName = 'DevopsPractice'
+	archiveVersion = '0.0.1-SNAPSHOT'
+}
